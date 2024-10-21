@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/hemanth5603/email_notification_server/models"
@@ -16,9 +15,6 @@ func SendEmail(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusBadRequest).
 			JSON(fiber.Map{"status": "false", "error": err.Error()})
 	}
-
-	currentTime := time.Now().Format("15:04")      // Format to 06:00 format
-	currentDate := time.Now().Format("2006-01-02") // Current Date
 
 	from := "shemanth.kgp@gmail.com"
 	password := "dydbmplsdbljitem"
@@ -45,7 +41,7 @@ func SendEmail(ctx *fiber.Ctx) error {
 				<br/>
 				<p style="font-size: 16px;">Stay alert and take precautions accordingly.</p>
 			</body>
-		</html>`, payload.Temperature, payload.Weather, payload.Location, currentDate, currentTime))
+		</html>`, payload.Temperature, payload.Weather, payload.Location, payload.Date, payload.Time))
 
 	d := mail.NewDialer(smtpHost, smtpPort, from, password)
 	if err := d.DialAndSend(m); err != nil {
